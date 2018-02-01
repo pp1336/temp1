@@ -13,7 +13,7 @@ print('sum = ')
 print(sum(prior))
 print('==========================================')
 
-varC = 1
+varC = 0
 varP = 1
 CPT = s.CPT(theData, varC, varP, noStates)
 print('size should be ' + str(noStates[varC]) + ' by ' + str(noStates[varP]))
@@ -38,3 +38,15 @@ CPT = numpy.array(CPT)
 print(CPT)
 print(sum(CPT))
 print('==========================================')
+
+varC = 2
+varP = 1
+JPT = s.JPT(theData, varC, varP, noStates)
+CPT = s.CPT(theData, varC, varP, noStates)
+CPT_ = s.JPT2CPT(JPT)
+print(array(CPT))
+print(array(CPT_))
+print('equal result')
+dif = (array(CPT) - array(CPT_)) ** 2
+print(dif)
+print(sum(dif))

@@ -42,8 +42,10 @@ def JPT(theData, varRow, varCol, noStates):
 #
 # Function to convert a joint probability table to a conditional probability table
 def JPT2CPT(aJPT):
-#Coursework 1 task 4 should be inserted here 
-   
+#Coursework 1 task 4 should be inserted here
+    aJPT_ = array(aJPT)
+    Bs = aJPT_.sum(axis=0)
+    aJPT = [[col / bs for col, bs in zip(row, Bs)] for row in aJPT]
 # coursework 1 taks 4 ends here
     return aJPT
 
