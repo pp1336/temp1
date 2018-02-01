@@ -33,7 +33,10 @@ def CPT(theData, varC, varP, noStates):
 def JPT(theData, varRow, varCol, noStates):
     jPT = zeros((noStates[varRow], noStates[varCol]), float )
 #Coursework 1 task 3 should be inserted here 
-    
+    for dataPoint in theData:
+        jPT[dataPoint[varRow], dataPoint[varCol]] += 1
+    total = float(len(theData))
+    jPT = [[col / total for col in row] for row in jPT]
 # end of coursework 1 task 3
     return jPT
 #
