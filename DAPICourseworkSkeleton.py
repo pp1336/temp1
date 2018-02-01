@@ -69,58 +69,41 @@ def Query(theQuery, naiveBayes):
 #
 # End of Coursework 1
 #
-# Coursework 2 begins here
-#
-# Calculate the mutual information from the joint probability table of two variables
-def MutualInformation(jP):
-    mi=0.0
-# Coursework 2 task 1 should be inserted here
-   
-
-# end of coursework 2 task 1
-    return mi
-#
-# construct a dependency matrix for all the variables
-def DependencyMatrix(theData, noVariables, noStates):
-    MIMatrix = zeros((noVariables,noVariables))
-# Coursework 2 task 2 should be inserted here
-    
-
-# end of coursework 2 task 2
-    return MIMatrix
-# Function to compute an ordered list of dependencies 
-def DependencyList(depMatrix):
-    depList=[]
-# Coursework 2 task 3 should be inserted here
-    
-
-# end of coursework 2 task 3
-    return array(depList2)
-#
-# Functions implementing the spanning tree algorithm
-# Coursework 2 task 4
-
-def SpanningTreeAlgorithm(depList, noVariables):
-    spanningTree = []
-  
-    return array(spanningTree)
-#
-# End of coursework 2
-#
 
 #
 # main program part for Coursework 1
 #
-#noVariables, noRoots, noStates, noDataPoints, datain = ReadFile("Neurones.txt")
-#theData = array(datain)
-#AppendString("results.txt","Coursework One Results by dfg")
-#AppendString("results.txt","") #blank line
-#AppendString("results.txt","The prior probability of node 0")
-#prior = Prior(theData, 0, noStates)
-#AppendList("results.txt", prior)
-#
-# continue as described
-#
-#
+noVariables, noRoots, noStates, noDataPoints, datain = ReadFile("Neurones.txt")
+theData = array(datain)
+AppendString("results.txt","Coursework One Results by dfg")
+AppendString("results.txt","") #blank line
 
+AppendString('results.txt','The prior probability of node 0')
+prior = Prior(theData, 0, noStates)
+AppendList('results.txt', array(prior))
 
+AppendString('results.txt', 'The conditional probability matrix P(2|0) calculated from the data')
+cpt = CPT(theData, 2, 0, noStates)
+AppendArray('results.txt', array(cpt))
+
+AppendString('results.txt', 'The joint probability matrix P(2&0) calculated from the data')
+jpt = JPT(theData, 2, 0, noStates)
+AppendArray('results.txt', array(jpt))
+
+AppendString('results.txt', 'The conditional probability matrix P(2|0) calculated from the joint probability matrix P(2&0)')
+cpt_ = JPT2CPT(jpt)
+AppendArray('results.txt', array(cpt))
+
+AppendString('results.txt', 'The results of queries [4,0,0,0,5] on the naive network')
+naiveBayes = [array(prior)]
+for i in xrange(1, 6):
+    naiveBayes.append(array(CPT(theData, i, 0, noStates)))
+theQuery =  [4,0,0,0,5]
+pdf1 = Query(theQuery, naiveBayes)
+theQuery =  [6, 5, 2, 5, 5]
+pdf2 = Query(theQuery, naiveBayes)
+AppendList('results.txt', array(pdf1))
+AppendString('results.txt', 'The results of queries [6, 5, 2, 5, 5] on the naive network')
+AppendList('results.txt', array(pdf2))
+#
+#
