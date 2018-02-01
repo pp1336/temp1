@@ -11,18 +11,22 @@ def Prior(theData, root, noStates):
     prior = zeros((noStates[root]), float )
 # Coursework 1 task 1 should be inserted here
     for dataPoint in theData:
-        print(dataPoint)
         prior[dataPoint[root]] += 1
     total = float(len(theData))
     prior = [freq / total for freq in prior]
 # end of Coursework 1 task 1
     return prior
-# Function to compute a CPT with parent node varP and xchild node varC from the data array
+# Function to compute a CPT with parent node varP and child node varC from the data array
 # it is assumed that the states are designated by consecutive integers starting with 0
 def CPT(theData, varC, varP, noStates):
     cPT = zeros((noStates[varC], noStates[varP]), float )
 # Coursework 1 task 2 should be inserte4d here
-   
+    varPcount = zeros(noStates[varP])
+    for dataPoint in theData:
+        cPT[dataPoint[varC], dataPoint[varP]] += 1
+        varPcount[dataPoint[varP]] += 1
+    varPcount = [float(x) for x in varPcount]
+    cPT = [[col / total for col, total in zip(row, varPcount)] for row in cPT]
 # end of coursework 1 task 2
     return cPT
 # Function to calculate the joint probability table of two variables in the data set

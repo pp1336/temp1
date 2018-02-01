@@ -1,5 +1,6 @@
 import DAPICourseworkLibrary as l
 import DAPICourseworkSkeleton as s
+import numpy
 from numpy import *
 
 
@@ -10,3 +11,15 @@ print('prior = ')
 print(prior)
 print('sum = ')
 print(sum(prior))
+
+varC = 1
+varP = 1
+CPT = s.CPT(theData, varC, varP, noStates)
+print('size should be ' + str(noStates[varC]) + ' by ' + str(noStates[varP]))
+print('got ' + str(len(CPT)) + ' by ' + str(len(CPT[0])))
+print('cpt = ')
+print(CPT)
+print('sum = ')
+CPT = numpy.array(CPT)
+print(CPT)
+print(CPT.sum(axis=0))
