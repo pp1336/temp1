@@ -10,7 +10,11 @@ from numpy import *
 def Prior(theData, root, noStates):
     prior = zeros((noStates[root]), float )
 # Coursework 1 task 1 should be inserted here
-    
+    for dataPoint in theData:
+        print(dataPoint)
+        prior[dataPoint[root]] += 1
+    total = float(len(theData))
+    prior = [freq / total for freq in prior]
 # end of Coursework 1 task 1
     return prior
 # Function to compute a CPT with parent node varP and xchild node varC from the data array
@@ -90,13 +94,13 @@ def SpanningTreeAlgorithm(depList, noVariables):
 #
 # main program part for Coursework 1
 #
-noVariables, noRoots, noStates, noDataPoints, datain = ReadFile("Neurones.txt")
-theData = array(datain)
-AppendString("results.txt","Coursework One Results by dfg")
-AppendString("results.txt","") #blank line
-AppendString("results.txt","The prior probability of node 0")
-prior = Prior(theData, 0, noStates)
-AppendList("results.txt", prior)
+#noVariables, noRoots, noStates, noDataPoints, datain = ReadFile("Neurones.txt")
+#theData = array(datain)
+#AppendString("results.txt","Coursework One Results by dfg")
+#AppendString("results.txt","") #blank line
+#AppendString("results.txt","The prior probability of node 0")
+#prior = Prior(theData, 0, noStates)
+#AppendList("results.txt", prior)
 #
 # continue as described
 #
