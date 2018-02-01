@@ -50,3 +50,16 @@ print('equal result')
 dif = (array(CPT) - array(CPT_)) ** 2
 print(dif)
 print(sum(dif))
+print('==========================================')
+
+naiveBayes = [array(s.Prior(theData, 0, noStates))]
+for i in xrange(1, 6):
+    naiveBayes.append(array(s.CPT(theData, i, 0, noStates)))
+theQuery =  [4,0,0,0,5] #[6, 5, 2, 5, 5]
+rootPdf = s.Query(theQuery, naiveBayes)
+print('rootPdf = ')
+print(rootPdf)
+print(theQuery)
+print(naiveBayes[0])
+for i in xrange(1, 6):
+    print(naiveBayes[i][theQuery[i - 1]])

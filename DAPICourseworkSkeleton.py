@@ -53,9 +53,17 @@ def JPT2CPT(aJPT):
 # Function to query a naive Bayesian network
 def Query(theQuery, naiveBayes): 
     rootPdf = zeros((naiveBayes[0].shape[0]), float)
+    print(rootPdf.shape)
+    print(naiveBayes)
 # Coursework 1 task 5 should be inserted here
-  
-
+    for i in xrange(rootPdf.shape[0]):
+        p = naiveBayes[0][i]
+        for j in xrange(1, len(naiveBayes)):
+            p *= naiveBayes[j][theQuery[j - 1]][i]
+        rootPdf[i] = p
+    print(rootPdf)
+    total = float(sum(rootPdf))
+    rootPdf = [l / total for l in rootPdf]
 # end of coursework 1 task 5
     return rootPdf
 #
