@@ -89,11 +89,14 @@ def MutualInformation(jP):
     mi=0.0
 # Coursework 2 task 1 should be inserted here
     jP_ = array(jP)
+    # normalise for marginal probabilities
     As = jP_.sum(axis=1)
     Bs = jP_.sum(axis=0)
+    # compute mutual information
     for i in xrange(jP_.shape[0]):
         for j in xrange(jP_.shape[1]):
             ab = jP[i][j]
+            # ignore zero value
             if ab != 0:
                 mi += ab * math.log(ab / (As[i] * Bs[j]), 2)
 # end of coursework 2 task 1
@@ -104,12 +107,13 @@ def DependencyMatrix(theData, noVariables, noStates):
     MIMatrix = zeros((noVariables,noVariables))
 # Coursework 2 task 2 should be inserted here
     for i in xrange(noVariables):
-        for j in xrange(i + 1):
+        # form upper triangular matrix
+        for j in xrange(i + 1, noVariables):
+            # form dependency matrix
             jP = JPT(theData, i, j, noStates)
+            # calculate mutual infor
             mi = MutualInformation(jP)
             MIMatrix[i][j] = mi
-            if i != j:
-                MIMatrix[j][i] = mi
 # end of coursework 2 task 2
     return MIMatrix
 # Function to compute an ordered list of dependencies 
@@ -117,9 +121,12 @@ def DependencyList(depMatrix):
     depList=[]
 # Coursework 2 task 3 should be inserted here
     noVariables = depMatrix.shape[0]
+    # get depency from the upper triangular part
     for i in xrange(noVariables):
-        for j in xrange(i):
+        for j in xrange(i + 1, noVariables):
+            # add edge
             depList.append([depMatrix[i][j], i, j])
+    # sort according to mutual information
     depList.sort(key = lambda x: x[0], reverse = True)
     depList2 = array(depList)
 # end of coursework 2 task 3
@@ -130,37 +137,54 @@ def DependencyList(depMatrix):
 
 def SpanningTreeAlgorithm(depList, noVariables):
     spanningTree = []
+    # stores the graph built so far
     graph = {}
+    # build graph and collect edges
     for edge in depList:
+        # max number of edges <= no. of vars - 1
         if len(spanningTree) == noVariables - 1:
             break
         n1, n2 = edge[1], edge[2]
+        # use BFS to detect if there is existing path
+        # between n1 and n2
         if not BFS(graph, n1, n2, len(spanningTree) + 1):
+            # update graph and add edge
             addNode(graph, n1, n2)
             addNode(graph, n2, n1)
             spanningTree.append(edge) 
     return array(spanningTree)
 
+# helper functon to add an edge to graph between n1 and n2
 def addNode(graph, n1, n2):
     if n1 in graph:
         graph[n1].append(n2)
     else:
         graph[n1] = [n2]
 
+# helper function using BFS to detect whether n2 can be
+# reached from n1 by following the edges in graph
 def BFS(graph, n1, n2, size):
+    # if n1 or n2 not in grpah, then cannot reach
     if not (n1 in graph and n2 in graph):
         return False
+    # set of nodes visited so far
     visited = set()
+    # queue for bfs
     q = [n1]
+    # loop until queue is empty
     while len(q) > 0:
         cur = q.pop(0)
+        # avoid double visit
         if cur in visited:
             continue
         visited.add(cur)
+        # found path
         if cur == n2:
             return True
+        # max number of distinct visit is <= no. nodes in graph
         if len(visited) == size:
             return False
+        # get all children nodes
         for n in graph[cur]:
             q.append(n)
     return False
@@ -175,8 +199,6 @@ noVariables, noRoots, noStates, noDataPoints, datain = ReadFile("HepatitisC.txt"
 theData = array(datain)
 AppendString("results.txt", "Coursework Two Results by dfg")
 AppendString("results.txt", "") #blank line
-
-jP = JPT(theData, 1, 2, noStates)
 
 dep_matrix = DependencyMatrix(theData, noVariables, noStates)
 AppendString("results.txt", "The dependency matrix for the HepatitisC data set")
